@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, computed, watch, nextTick, onBeforeUnmount } from 'vue';
 import { LocateFixed, Loader2, MapPin, Phone, Send, X } from 'lucide-vue-next';
-import { addReport } from '../data/reports.js';
+import { addReport } from '../data/Reports.js';
 
 const props = defineProps({
   open: { type: Boolean, default: false }

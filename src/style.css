@@ -1,0 +1,280 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* transitions.dev Motion Tokens */
+:root {
+  /* Tabs Sliding Remix Tokens */
+  --duration-fast: 250ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --p16-dur: var(--duration-fast);
+  --p16-ease: var(--ease-smooth-out);
+
+  /* Number Pop-in Exact Motion Tokens */
+  --t-num-pop-duration: 280ms;
+  --t-num-pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-num-pop-scale-start: 0.85;
+  --t-num-pop-distance: 6px;
+
+  /* Input Clear with Dissolve Motion Tokens (transitions.dev) */
+  --clear-dur: 1000ms;
+  --clear-out-dur: 400ms;
+  --clear-in-dur: 400ms;
+  --clear-out-fly: 12px;
+  --clear-in-fly: 12px;
+  --clear-out-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --clear-in-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --clear-blur: 2px;
+  --glow-delay: 50ms;
+  --glow-peak-at: 0.15;
+  --glow-opacity: 0.85;
+  --glow-spread: 1.5;
+}
+
+/* Namespaced Number Pop-in Animation */
+.t-num-pop {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  animation: t-num-pop-anim var(--t-num-pop-duration) var(--t-num-pop-easing) forwards;
+}
+
+@keyframes t-num-pop-anim {
+  0% {
+    opacity: 0;
+    transform: translateY(var(--t-num-pop-distance)) scale(var(--t-num-pop-scale-start));
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* transitions.dev — Input clear with dissolve styles */
+.t-clear {
+  position: relative;
+  overflow: hidden;
+}
+
+.t-clear-mirror,
+.t-clear-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 2;
+  padding: 0 0.75rem;
+}
+
+.t-clear-mirror {
+  opacity: 0;
+}
+
+.t-clear.has-value .t-clear-mirror,
+.t-clear.is-clearing .t-clear-mirror {
+  opacity: 1;
+}
+
+/* Hide native glyphs while mirror owns them */
+.t-clear.has-value > input,
+.t-clear.is-clearing > input {
+  -webkit-text-fill-color: transparent;
+}
+
+.t-clear.has-value .t-clear-placeholder {
+  opacity: 0;
+}
+
+/* Per-word streak overlay */
+.t-clear-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+  mix-blend-mode: screen;
+}
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #484B52;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+}
+
+/* Lenis Smooth Scroll Overrides */
+html.lenis, body.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+  .p16-route-indicator,
+  .t-num-pop,
+  .t-clear-glow {
+    animation: none !important;
+    transition: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Leaflet Map Dark Theme Tile Filter */
+.monochrome-map .leaflet-tile-pane {
+  filter: grayscale(100%) invert(92%) contrast(115%) brightness(80%);
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #1D1F24 !important;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #343740;
+  border-radius: 4px;
+}
+/* =====================================================================
+   Light theme
+   ---------------------------------------------------------------------
+   Components hard-code the dark palette as Tailwind classes (bg-[#1D1F24],
+   text-white, ...). Rather than edit every component, this block re-maps
+   those classes while <html data-theme="light"> is set (see useTheme.js).
+
+   Palette map (dark -> light)
+     #484B52 page        -> --c-page      #2E3036 shell  -> --c-shell
+     #1D1F24 card        -> --c-card      #18191C inset  -> --c-inset
+     #282A30 chip        -> --c-chip      #2B2D34 raised -> --c-raised
+     #343740 / #383B43 border -> --c-line
+     text-white -> --c-ink, text-gray-100..500 -> --c-ink-2..5
+     bg-white + text-black (solid pills/buttons) are inverted as a pair
+
+   New components should keep using these same classes and they will theme
+   automatically. Colours set with inline style="" are NOT re-mapped.
+   ===================================================================== */
+html[data-theme='light'] {
+  --c-page: #d9dce2;
+  --c-shell: #eef0f4;
+  --c-card: #ffffff;
+  --c-inset: #f3f4f7;
+  --c-chip: #e8eaef;
+  --c-raised: #e3e6ec;
+  --c-line: #d4d7de;
+  --c-line-strong: #c3c7d0;
+
+  --c-ink: #14161a;
+  --c-ink-2: #2b2e35;
+  --c-ink-3: #4a4f5a;
+  --c-ink-4: #5f6572;
+  --c-ink-5: #7a8190;
+
+  --c-solid: #1d1f24;
+  --c-solid-hover: #3a3d45;
+  --c-on-solid: #ffffff;
+
+  --c-good: #047857;
+  --c-warn: #b45309;
+  --c-bad: #be123c;
+}
+
+html[data-theme='light'],
+html[data-theme='light'] body {
+  background-color: var(--c-page);
+}
+
+/* Backgrounds */
+html[data-theme='light'] [class~='bg-[#484B52]'] { background-color: var(--c-page); }
+html[data-theme='light'] [class~='bg-[#2E3036]'] { background-color: var(--c-shell); }
+html[data-theme='light'] [class~='bg-[#1D1F24]'] { background-color: var(--c-card); }
+html[data-theme='light'] [class*='bg-[#1D1F24]/'] { background-color: rgb(255 255 255 / 0.92); }
+html[data-theme='light'] [class~='bg-[#18191C]'] { background-color: var(--c-inset); }
+html[data-theme='light'] [class~='bg-[#282A30]'] { background-color: var(--c-chip); }
+html[data-theme='light'] [class~='bg-[#2B2D34]'] { background-color: var(--c-raised); }
+html[data-theme='light'] [class~='bg-[#343740]'] { background-color: var(--c-line); }
+html[data-theme='light'] [class~='bg-white'] { background-color: var(--c-solid); }
+
+/* Borders */
+html[data-theme='light'] [class~='border-[#343740]'],
+html[data-theme='light'] [class~='border-[#383B43]'] { border-color: var(--c-line); }
+html[data-theme='light'] [class~='border-[#484B52]'] { border-color: var(--c-line-strong); }
+html[data-theme='light'] [class*='border-[#343740]/'] { border-color: var(--c-line); }
+html[data-theme='light'] [class~='border-white'] { border-color: var(--c-solid); }
+html[data-theme='light'] [class~='border-white/80'] { border-color: rgb(29 31 36 / 0.8); }
+html[data-theme='light'] [class~='border-gray-400'] { border-color: var(--c-ink-4); }
+
+/* Text */
+html[data-theme='light'] [class~='text-white'] { color: var(--c-ink); }
+html[data-theme='light'] [class~='text-black'] { color: var(--c-on-solid); }
+html[data-theme='light'] [class~='text-gray-100'],
+html[data-theme='light'] [class~='text-gray-200'] { color: var(--c-ink-2); }
+html[data-theme='light'] [class~='text-gray-300'] { color: var(--c-ink-3); }
+html[data-theme='light'] [class~='text-gray-400'] { color: var(--c-ink-4); }
+html[data-theme='light'] [class~='text-gray-500'] { color: var(--c-ink-5); }
+html[data-theme='light'] [class~='text-emerald-400'] { color: var(--c-good); }
+html[data-theme='light'] [class~='text-amber-400'] { color: var(--c-warn); }
+html[data-theme='light'] [class~='text-rose-400'] { color: var(--c-bad); }
+
+/* Text that sits on a coloured fill stays white (e.g. the red Emergency buttons) */
+html[data-theme='light'] [class~='bg-rose-600'][class~='text-white'],
+html[data-theme='light'] [class~='bg-rose-500'][class~='text-white'] { color: #ffffff; }
+
+/* Hover, focus and disabled states */
+html[data-theme='light'] [class~='hover:bg-gray-200']:hover { background-color: var(--c-solid-hover); }
+html[data-theme='light'] [class~='hover:bg-[#2B2D34]']:hover { background-color: var(--c-raised); }
+html[data-theme='light'] [class~='hover:bg-[#343740]']:hover { background-color: var(--c-line-strong); }
+html[data-theme='light'] [class~='hover:text-white']:hover { color: var(--c-ink); }
+html[data-theme='light'] .group:hover [class~='group-hover:text-white'] { color: var(--c-ink); }
+html[data-theme='light'] .group:hover [class~='group-hover:text-gray-200'] { color: var(--c-ink-2); }
+html[data-theme='light'] .group:hover [class~='group-hover:bg-[#2B2D34]'] { background-color: var(--c-raised); }
+
+html[data-theme='light'] [class~='focus-within:border-white']:focus-within,
+html[data-theme='light'] [class~='focus:border-white']:focus { border-color: var(--c-solid); }
+html[data-theme='light'] [class~='focus-visible:outline-white']:focus-visible,
+html[data-theme='light'] [class~='focus-within:outline-white']:focus-within { outline-color: var(--c-solid); }
+html[data-theme='light'] [class~='focus-visible:bg-[#2B2D34]']:focus-visible { background-color: var(--c-raised); }
+
+html[data-theme='light'] [class~='placeholder:text-gray-500']::placeholder { color: var(--c-ink-5); }
+html[data-theme='light'] [class~='disabled:bg-[#484B52]']:disabled {
+  background-color: var(--c-line-strong);
+  color: var(--c-ink-4);
+}
+
+/* Softer shadows on a light surface */
+html[data-theme='light'] [class~='shadow-black/60'],
+html[data-theme='light'] [class~='shadow-black/50'],
+html[data-theme='light'] [class~='shadow-black/40'] { --tw-shadow-color: rgb(20 22 26 / 0.16); }
+
+/* Scrollbar */
+html[data-theme='light'] ::-webkit-scrollbar-thumb { background: var(--c-line-strong); }
+
+/* Map: light grayscale tiles, and white route lines become dark so they stay visible */
+html[data-theme='light'] .leaflet-container { background: var(--c-chip) !important; }
+html[data-theme='light'] .monochrome-map .leaflet-tile-pane {
+  filter: grayscale(100%) contrast(95%) brightness(103%);
+}
+html[data-theme='light'] .leaflet-overlay-pane path[stroke='#fff' i],
+html[data-theme='light'] .leaflet-overlay-pane path[stroke='#ffffff' i],
+html[data-theme='light'] .leaflet-overlay-pane path[stroke='white' i] {
+  stroke: var(--c-solid);
+}

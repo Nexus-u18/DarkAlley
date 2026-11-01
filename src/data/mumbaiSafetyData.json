@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "location": "Bandra West (Linking Road)",
+    "category": "Commercial & Nightlife",
+    "lat": 19.0607,
+    "lng": 72.8362,
+    "safetyScore": 90,
+    "lighting": "High",
+    "patrolFrequency": "High",
+    "incidentType": "Very Safe / Active Night Footfall"
+  },
+  {
+    "id": 2,
+    "location": "Colaba Causeway",
+    "category": "Tourist Hub",
+    "lat": 18.9220,
+    "lng": 72.8335,
+    "safetyScore": 85,
+    "lighting": "High",
+    "patrolFrequency": "High",
+    "incidentType": "Patrolled Tourist Corridor"
+  },
+  {
+    "id": 3,
+    "location": "Andheri East Industrial Area",
+    "category": "Business District",
+    "lat": 19.1136,
+    "lng": 72.8697,
+    "safetyScore": 65,
+    "lighting": "Moderate",
+    "patrolFrequency": "Moderate",
+    "incidentType": "Low Footfall Post 11 PM"
+  },
+  {
+    "id": 4,
+    "location": "Juhu Beach Promenade",
+    "category": "Public Space",
+    "lat": 19.0988,
+    "lng": 72.8267,
+    "safetyScore": 82,
+    "lighting": "Moderate",
+    "patrolFrequency": "High",
+    "incidentType": "Open Public Space"
+  },
+  {
+    "id": 5,
+    "location": "Kurla West Backroads",
+    "category": "Residential Backroad",
+    "lat": 19.0650,
+    "lng": 72.8790,
+    "safetyScore": 42,
+    "lighting": "Low",
+    "patrolFrequency": "Low",
+    "incidentType": "Poor Lighting / Narrow Lanes"
+  }
+]

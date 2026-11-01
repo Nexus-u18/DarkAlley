@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "location": "Connaught Place (Outer Circle)",
+    "category": "Commercial Hub",
+    "lat": 28.6280,
+    "lng": 77.2090,
+    "safetyScore": 92,
+    "lighting": "High",
+    "patrolFrequency": "High",
+    "incidentType": "Heavy Police Presence / Well Lit"
+  },
+  {
+    "id": 2,
+    "location": "Chandni Chowk",
+    "category": "Dense Market",
+    "lat": 28.6506,
+    "lng": 77.2303,
+    "safetyScore": 58,
+    "lighting": "Moderate",
+    "patrolFrequency": "Moderate",
+    "incidentType": "Crowded / High Pickpocket Risk"
+  },
+  {
+    "id": 3,
+    "location": "Hauz Khas Village",
+    "category": "Nightlife",
+    "lat": 28.5539,
+    "lng": 77.1901,
+    "safetyScore": 75,
+    "lighting": "High",
+    "patrolFrequency": "Moderate",
+    "incidentType": "Active Nightlife Zone"
+  },
+  {
+    "id": 4,
+    "location": "Saket District Centre",
+    "category": "Commercial",
+    "lat": 28.5293,
+    "lng": 77.2195,
+    "safetyScore": 88,
+    "lighting": "High",
+    "patrolFrequency": "High",
+    "incidentType": "Secure Commercial Area"
+  },
+  {
+    "id": 5,
+    "location": "Anand Vihar Outer Stretch",
+    "category": "Transit Outskirts",
+    "lat": 28.6463,
+    "lng": 77.3160,
+    "safetyScore": 40,
+    "lighting": "Low",
+    "patrolFrequency": "Low",
+    "incidentType": "Isolated Stretch / Poor Lighting"
+  }
+]

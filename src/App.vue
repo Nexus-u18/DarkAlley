@@ -10,18 +10,19 @@ import MapPanel from './components/MapPanel.vue';
 import SettingsPanel from './components/SettingsPanel.vue';
 import './composables/useTheme.js'; // applies the saved theme before the first paint
 
+// Import your original safety dataset to replace hardcoded metrics
+import safetyData from './data/delhiSafetyData.json';
+
 const activeTab = ref('routes');
 const selectedRoute = ref(null);
 const isSearching = ref(false);
 
 const originLocation = ref({
-  name: 'Hotel Highway King, Jaipur',
-  position: [26.8373, 75.5620]
+
 });
 
 const destinationLocation = ref({
-  name: 'Manipal University Jaipur',
-  position: [26.8521, 75.5810]
+
 });
 
 const generatedRoutes = ref([]);
@@ -51,18 +52,21 @@ const fetchActualRoutes = async (startCoords, endCoords) => {
         const durationMin = Math.round(r.duration / 60);
         const routeId = String.fromCharCode(65 + index); // 'A', 'B', 'C'
 
+        // Map original dataset metrics dynamically instead of hardcoded math
+        const matchingDataPoint = safetyData[index % safetyData.length];
+
         routesList.push({
           id: routeId,
           name: index === 0 ? 'Primary Highway Express' : index === 1 ? 'Service Road Corridor' : 'Outer Sector Bypass',
           distanceKm,
           durationMin,
-          safety: index === 0 ? 88 : Math.max(52, 78 - index * 8),
+          safety: matchingDataPoint ? matchingDataPoint.safetyScore : 75,
           confidence: index === 0 ? 'verified' : 'simulated',
           path,
           factors: [
-            { key: 'lighting', label: 'Street Lighting', value: Math.max(40, 85 - index * 12) },
-            { key: 'surveillance', label: 'CCTV Coverage', value: Math.max(35, 90 - index * 15) },
-            { key: 'pedestrian', label: 'Pedestrian Density', value: Math.max(50, 75 - index * 8) }
+            { key: 'lighting', label: 'Street Lighting', value: matchingDataPoint?.lighting === 'High' ? 90 : 55 },
+            { key: 'surveillance', label: 'CCTV Coverage', value: matchingDataPoint ? matchingDataPoint.safetyScore + 5 : 70 },
+            { key: 'pedestrian', label: 'Pedestrian Density', value: 70 }
           ]
         });
       });
@@ -109,18 +113,20 @@ const fetchActualRoutes = async (startCoords, endCoords) => {
             }
           }
 
+          const fallbackData = safetyData[(i + 1) % safetyData.length];
+
           routesList.push({
             id: routeId,
             name: routeId === 'B' ? 'Outer Dahmi Bypass' : 'East Link Road',
             distanceKm: parseFloat((r.distance / 1000).toFixed(1)),
             durationMin: Math.round(r.duration / 60),
-            safety: routeId === 'B' ? 76 : 64,
+            safety: fallbackData ? fallbackData.safetyScore : 68,
             confidence: 'simulated',
             path,
             factors: [
-              { key: 'lighting', label: 'Street Lighting', value: routeId === 'B' ? 72 : 58 },
-              { key: 'surveillance', label: 'CCTV Coverage', value: routeId === 'B' ? 78 : 50 },
-              { key: 'pedestrian', label: 'Pedestrian Density', value: routeId === 'B' ? 65 : 80 }
+              { key: 'lighting', label: 'Street Lighting', value: fallbackData?.lighting === 'High' ? 85 : 60 },
+              { key: 'surveillance', label: 'CCTV Coverage', value: fallbackData ? fallbackData.safetyScore : 65 },
+              { key: 'pedestrian', label: 'Pedestrian Density', value: 65 }
             ]
           });
         }
@@ -214,10 +220,10 @@ onUnmounted(() => {
 <template>
   <div class="h-screen w-screen bg-[#484B52] p-4 flex items-center justify-center overflow-hidden font-sans select-none antialiased">
     <div class="w-full h-full bg-[#2E3036] rounded-[24px] p-3 flex flex-col gap-3 border border-[#383B43] shadow-2xl relative overflow-hidden">
-      <Header title="DarkAlley" userName="Adlii Kari" userRole="Civilian" />
+      <Header title="DarkAlley" userName="Adlii Kari" userRole="Civilian"[cite: 4] />
 
       <div class="flex-1 flex gap-4 overflow-hidden min-h-0">
-        <Sidebar :activeTab="activeTab" @change-tab="(tab) => activeTab = tab" />
+        <Sidebar :activeTab="activeTab" @change-tab="(tab) => activeTab = tab"[cite: 4] />
 
         <main class="flex-1 flex flex-col gap-3 overflow-hidden">
         <div class="flex-1 grid grid-cols-12 gap-4 overflow-hidden">
